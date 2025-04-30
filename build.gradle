@@ -1,0 +1,71 @@
+plugins {
+    // Apply the java plugin to add support for Java
+    id 'java'
+
+    // Apply the application plugin to add support for building a CLI application.
+    id 'application'
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+}
+
+def jadx_version = '1.4.5'
+def jadx_home = "${System.env.JADX_HOME}"
+def d2j_lib = "${System.env.DEX2JAR_LIB}"
+def d2j_version = "${System.env.DEX2JAR_VERSION}"
+
+repositories {
+    // Use jcenter for resolving dependencies.
+    // You can declare any Maven/Ivy/file repository here.
+    google()
+    mavenCentral()
+    // Adds lib dirs from env
+    flatDir {
+      dirs("${jadx_home}/lib", "${d2j_lib}")
+    }
+}
+
+def asm_version = '9.6'
+def main_class = 'jadx_factgen.App'
+
+dependencies {
+    compileOnly 'org.jetbrains:annotations:24.0.0'
+    implementation 'org.slf4j:slf4j-api:2.0.3'
+    implementation 'ch.qos.logback:logback-classic:1.3.4'
+    implementation ":jadx-core:${jadx_version}"
+    implementation ":jadx-plugins-api:${jadx_version}"
+    implementation ":jadx-dex-input:${jadx_version}"
+    implementation ":jadx-java-input:${jadx_version}"
+    implementation ":jadx-java-convert:${jadx_version}"
+    implementation ":jadx-smali-input:${jadx_version}"
+    implementation 'com.beust:jcommander:1.82'
+    implementation ":dex-reader-api:${d2j_version}"
+    implementation ":dex-reader:${d2j_version}"
+    implementation ":dex-writer:${d2j_version}"
+    implementation "org.ow2.asm:asm:${asm_version}"
+    implementation "org.ow2.asm:asm-tree:${asm_version}"
+    implementation 'org.apktool:apktool-lib:2.9.3'
+    implementation 'com.googlecode.json-simple:json-simple:1.1.1'
+}
+
+application {
+    // Define the main class for the application.
+    mainClassName = "${main_class}"
+}
+
+// "gradle fatJar" produces ./build/libs/jadx_factgen-all.jar
+task fatJar(type: Jar) {
+  description 'Builds a single fat jar with all dependencies.'
+  manifest {
+    attributes 'Main-Class': "${main_class}"
+  }
+  archiveClassifier = "all"
+  from {
+    configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+  with jar
+  // gradle 7.0+ needs this (?)
+  duplicatesStrategy "exclude"
+}
