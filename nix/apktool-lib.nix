@@ -1,5 +1,7 @@
-{ stdenv
-, lib }:
+{
+  stdenv,
+  lib,
+}:
 stdenv.mkDerivation rec {
   name = "apktool-lib";
   version = "2.9.3";
@@ -28,11 +30,11 @@ stdenv.mkDerivation rec {
     sha256 = "0m71akmdfpr7ri41mj0fl20l622g2vpwl9qcpcpgv35nw4pg32m5";
   };
 
-  phases = [ "installPhase" ];
+  phases = ["installPhase"];
 
   installPhase = ''
-  mkdir -p $out/lib
-  cp ${src} ${src2} ${src3} ${src4} ${src5} ${src6} $out/lib/
-  find $out/lib
+    mkdir -p $out/lib
+    cp ${src} ${src2} ${src3} ${src4} ${src5} ${src6} $out/lib/
+    find $out/lib
   '';
 }

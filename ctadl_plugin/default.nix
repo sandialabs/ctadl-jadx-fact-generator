@@ -4,15 +4,16 @@
   jre,
   makeWrapper,
   lib,
-}:
-let
+}: let
   withPythonWheel = final: prev: {
     outputs = prev.outputs ++ ["whl"];
-    postInstall = prev.postInstall or ""
-    + ''
-      mkdir $whl
-      cp -r dist/* $whl/
-    '';
+    postInstall =
+      prev.postInstall
+      or ""
+      + ''
+        mkdir $whl
+        cp -r dist/* $whl/
+      '';
   };
   pkg = python3.pkgs.buildPythonPackage rec {
     pname = "ctadl-jadx-fact-generator-plugin";
