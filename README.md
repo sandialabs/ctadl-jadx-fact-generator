@@ -42,3 +42,13 @@ This phase is terminate with a message that says `Output in <path>`.
 The second phase, apk/jar rewriting, may also print some scary messages.
 Note that even if this phase fails, the first phase likely generated proper, usable CTADL facts.
 The success of the second phase only affects workflows that intend to use (i.e., debug) the rewritten app; but most workflows need just the facts.
+
+## CEN Header Error
+If a file has an invalid header, it may fail with an error like this:
+```
+java.util.zip.ZipException: Invalid CEN header (invalid zip64 extra data field size)
+```
+In this case, if you still want to analyze the file, you can do the following (or the equivalent for setting environment variables in Windows) and rerun:
+```
+export JAVA_TOOL_OPTIONS="$JAVA_TOOL_OPTIONS -Djdk.util.zip.disableZip64ExtraFieldValidation=true"
+```
