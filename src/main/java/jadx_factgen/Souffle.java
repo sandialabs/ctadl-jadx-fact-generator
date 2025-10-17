@@ -299,12 +299,12 @@ class Souffle {
                 new SouffleAttr(SouffleType.SYMBOL, "type"));
         aGetWriter = new SouffleFactFile("AGet.facts",
                 new SouffleAttr(SouffleType.SYMBOL, "stmt"),
-                new SouffleAttr(SouffleType.NUMBER, "index"),
+                new SouffleAttr(SouffleType.SYMBOL, "index"),
                 new SouffleAttr(SouffleType.SYMBOL, "toVar"),
                 new SouffleAttr(SouffleType.SYMBOL, "fromVar"));
         aPutWriter = new SouffleFactFile("APut.facts",
                 new SouffleAttr(SouffleType.SYMBOL, "stmt"),
-                new SouffleAttr(SouffleType.NUMBER, "index"),
+                new SouffleAttr(SouffleType.SYMBOL, "index"),
                 new SouffleAttr(SouffleType.SYMBOL, "toVar"),
                 new SouffleAttr(SouffleType.SYMBOL, "fromVar"));
         phiAssignWriter = new SouffleFactFile("PhiAssign.facts",

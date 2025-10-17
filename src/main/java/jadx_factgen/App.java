@@ -88,7 +88,7 @@ public class App {
             converter = LogLevelConverter.class
     )
     protected LogLevelEnum logLevel = LogLevelEnum.QUIET;
-    @Parameter(names = { "--suppress-jadx-exceptions" }, description = "Don't log out jadx exceptions")
+    @Parameter(names = { "--suppress-jadx-exceptions" }, description = "Don't log out jadx exceptions", arity = 1)
     protected boolean suppressJadxExceptions = true;
     @Parameter(names = { "--show-inconsistent-code" }, description = "Output inconsistent code when decompilation fails", arity = 1)
     protected boolean showInconsistentCode = true;
@@ -144,6 +144,7 @@ public class App {
         JadxArgs jadxArgs = new JadxArgs();
         jadxArgs.setInputFile(new File(app.inputFile));
         File outDir = new File(app.outDirArg);
+        jadxArgs.setDebugInfo(app.debugInfo);
         jadxArgs.setOutDir(outDir);
         jadxArgs.setDecompilationMode(app.decompilationMode);
         jadxArgs.setThreadsCount(app.threadsCount);

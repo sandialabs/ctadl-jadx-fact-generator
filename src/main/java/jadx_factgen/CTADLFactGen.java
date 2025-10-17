@@ -588,13 +588,15 @@ public class CTADLFactGen extends AbstractVisitor {
                 InsnArg from = inCtx.insn.getArg(0);
                 // arg 1 is the index with type ArgType.NARROW_INTEGRAL
                 InsnArg index = inCtx.insn.getArg(1);
+                String realIndexString = factUtil.insnArgToString(inCtxs, inCtx, index);
                 String toVar = factUtil.getResultString(inCtx, from.getType().getArrayElement());
                 String fromVar = factUtil.insnArgToString(inCtxs, inCtx, from);
 
                 String indexString = factUtil.insnArgConstStringElseNull(index);
                 if (indexString != null) {
-                    souffle.aGetWriter.writeFact(inCtx.stmtStr, indexString, toVar, fromVar);
+                  realIndexString = indexString;
                 }
+                souffle.aGetWriter.writeFact(inCtx.stmtStr, realIndexString, toVar, fromVar);
                 break;
             }
 
@@ -608,13 +610,15 @@ public class CTADLFactGen extends AbstractVisitor {
                 // arg 1 is the index with type ArgType.NARROW_INTEGRAL
                 InsnArg index = inCtx.insn.getArg(1);
                 InsnArg from = inCtx.insn.getArg(2);
+                String realIndexString = factUtil.insnArgToString(inCtxs, inCtx, index);
                 String toVar = factUtil.insnArgToString(inCtxs, inCtx, to);
                 String fromVar = factUtil.insnArgToString(inCtxs, inCtx, from);
 
                 String indexString = factUtil.insnArgConstStringElseNull(index);
                 if (indexString != null) {
-                    souffle.aPutWriter.writeFact(inCtx.stmtStr, indexString, toVar, fromVar);
+                  realIndexString = indexString;
                 }
+                souffle.aPutWriter.writeFact(inCtx.stmtStr, realIndexString, toVar, fromVar);
                 break;
             }
 
