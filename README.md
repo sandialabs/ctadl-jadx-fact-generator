@@ -10,7 +10,7 @@ Java 11 or newer is required to run.
 
 Use pip:
 
-    $ pip install ctadl-jadx-fact-generator
+    $ pip install ctadl-jadx-fact-generator-plugin
 
 Afterward, if ctadl is installed, you can do:
 
