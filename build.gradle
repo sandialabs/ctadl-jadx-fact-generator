@@ -10,7 +10,7 @@ java {
     sourceCompatibility = JavaVersion.VERSION_11
 }
 
-def jadx_version = '1.4.5'
+def jadx_version = 'dev'
 def jadx_home = "${System.env.JADX_HOME}"
 def d2j_lib = "${System.env.DEX2JAR_LIB}"
 def d2j_version = "${System.env.DEX2JAR_VERSION}"
@@ -34,7 +34,8 @@ dependencies {
     implementation 'org.slf4j:slf4j-api:2.0.3'
     implementation 'ch.qos.logback:logback-classic:1.3.4'
     implementation ":jadx-core:${jadx_version}"
-    implementation ":jadx-plugins-api:${jadx_version}"
+    implementation ":jadx-input-api:${jadx_version}"
+    implementation ":jadx-plugins-tools:${jadx_version}"
     implementation ":jadx-dex-input:${jadx_version}"
     implementation ":jadx-java-input:${jadx_version}"
     implementation ":jadx-java-convert:${jadx_version}"

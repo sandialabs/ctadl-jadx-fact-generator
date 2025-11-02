@@ -171,7 +171,7 @@ public class App {
                     // I modeled the passes below after what
                     // Jadx.getSimpleModePasses() does
                     passes.add(new BlockSplitter());
-                    passes.add(new MethodVisitor(mth -> mth.add(AFlag.DISABLE_BLOCKS_LOCK)));
+                    passes.add(new MethodVisitor("disable_blocks_lock_visitor", mth -> mth.add(AFlag.DISABLE_BLOCKS_LOCK)));
                     passes.add(new BlockProcessor());
                     passes.add(new SSATransform());
                     passes.add(new MoveInlineVisitor());
@@ -180,7 +180,7 @@ public class App {
                     // of passing 'this' as 0'th arg).
                     passes.add(new ConstructorVisitor());
                     passes.add(new InitCodeVariables());
-                    passes.add(new MethodVisitor(mth -> mth.remove(AFlag.DONT_GENERATE)));
+                    passes.add(new MethodVisitor("dont_generate_visitor", mth -> mth.remove(AFlag.DONT_GENERATE)));
                 }
 
                 // add custom pass to infer more source line info

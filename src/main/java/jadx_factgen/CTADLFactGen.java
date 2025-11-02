@@ -25,7 +25,6 @@ import jadx.core.dex.visitors.AbstractVisitor;
 import jadx.core.dex.visitors.JadxVisitor;
 import jadx.core.utils.BlockUtils;
 import jadx.core.utils.EncodedValueUtils;
-import jadx.core.xmlgen.XmlSecurity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -35,6 +34,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
@@ -88,6 +88,23 @@ public class CTADLFactGen extends AbstractVisitor {
         // this way const variables can be made final
     }
 
+    private static DocumentBuilderFactory buildSecureDBF() {
+            try {
+                    DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
+                    dbf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+                    dbf.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", false);
+                    dbf.setFeature("http://xml.org/sax/features/external-general-entities", false);
+                    dbf.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+                    dbf.setFeature("http://apache.org/xml/features/dom/create-entity-ref-nodes", false);
+                    dbf.setXIncludeAware(false);
+                    dbf.setExpandEntityReferences(false);
+                    return dbf;
+            } catch (Exception e) {
+                    throw new RuntimeException("Fail to build secure XML DocumentBuilderFactory", e);
+            }
+    }
+
+
     public void init(RootNode root, List<ResourceFile> resources) {
         init(root);
         for (ResourceFile f : resources) {
@@ -95,7 +112,8 @@ public class CTADLFactGen extends AbstractVisitor {
                 LongFunction<String> getIdString = (long i) -> "<ManifestXmlNode>-" + Long.toUnsignedString(i);
                 String xmlContent = f.loadContent().getText().getCodeStr();
                 try {
-                    DocumentBuilder builder = XmlSecurity.getSecureDbf().newDocumentBuilder();
+                    DocumentBuilder builder = buildSecureDBF().newDocumentBuilder();
+                    // DocumentBuilder builder = XmlSecurity.getSecureDbf().newDocumentBuilder();
                     //noinspection BlockingMethodInNonBlockingContext
                     Document androidManifest = builder.parse(new InputSource(new StringReader(xmlContent)));
                     androidManifest.getDocumentElement().normalize();
@@ -176,28 +194,6 @@ public class CTADLFactGen extends AbstractVisitor {
         return ret;
     }
 
-    // The code utils verion of getLineNumForPos has a bug where it runs forever sometimes
-    // I think it happens when pos is at the start or end of the file
-    // We need a safer version for our purposes
-    public int getLineNumForPosSafe(String code, int pos) {
-        String newLine = ICodeWriter.NL;
-        int newLineLen = newLine.length();
-        int line = 1;
-        int prev = 0;
-        while (true) {
-                int next = code.indexOf(newLine, prev);
-		if (next >= pos) {
-		    return line;
-		}
-		if(next == -1) {
-		    return line;
-		}
-		prev = next + newLineLen;
-		line++;
-	}
-    }
-    
-    
     @Override
     public boolean visit(ClassNode cls) {
         // true means to keep processing inner classes and method, false means to stop
@@ -253,7 +249,7 @@ public class CTADLFactGen extends AbstractVisitor {
             return;
         }
         ArrayList<BlockNode> sortedBlocks = new ArrayList<>(blocks.size());
-        BlockUtils.dfsVisit(mth, sortedBlocks::add);
+        BlockUtils.visitDFS(mth, sortedBlocks::add);
 
         // DONT_GENERATE: process as usual, but don't output to generated code
         // seems like jadx visitors generally mark a node with DONT_GENERATE rather than removing them in some cases

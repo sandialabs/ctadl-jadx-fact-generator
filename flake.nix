@@ -87,7 +87,7 @@
               export JDTLS_GRADLE_JAVA_HOME="${java_home}"
               export JAVA8_HOME="${pkgs.jdk8.home}"
               export JAVA11_HOME="${pkgs.jdk11.home}"
-              export JADX_HOME="${jadxFactgenPackages.jadx}"
+              # export JADX_HOME="${jadxFactgenPackages.jadx}"
               export DEX2JAR_LIB="${jadxFactgenPackages.dex2jar}/lib"
               export DEX2JAR_VERSION="2.x"
               export PYTHONPATH=${dev-python}/${dev-python.sitePackages}
