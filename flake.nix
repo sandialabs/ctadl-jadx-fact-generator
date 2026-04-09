@@ -64,8 +64,8 @@
           type = "app";
           program = "${jadxFactgen}/bin/ctadl-jadx-fact-generator";
         };
-        devShell = let
-          dev-python = pkgs.python39.withPackages (python-packages:
+        devShells.default = let
+          dev-python = pkgs.python311.withPackages (python-packages:
             with python-packages; [
               wheel
               pip

@@ -24,6 +24,8 @@
 
     buildInputs = [];
     propagatedBuildInputs = [jadxFactgen];
+    pyproject = true;
+    build-system = with python3.pkgs; [ setuptools ];
 
     postConfigure = ''
       cp ${jadxFactgen}/lib/*.jar src/ctadl_jadx_fact_generator_plugin/
