@@ -239,11 +239,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1726700884,
-        "narHash": "sha256-SWL7rY0nj0HKcWlL1gaJrhMxCfPm+MMuEPVsgAKyHdk=",
+        "lastModified": 1775693571,
+        "narHash": "sha256-LioUoD8ZM2G+mrEqdIo22wPEwIygBe863xjryNlqcAs=",
         "owner": "dbueno",
         "repo": "merjar",
-        "rev": "b7fb225975b1e60a00e8d079e1c82f4144eae936",
+        "rev": "f9ec9aba30664746a6788910054e88775ac4a3e4",
         "type": "github"
       },
       "original": {
